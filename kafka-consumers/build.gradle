@@ -1,0 +1,52 @@
+plugins {
+    id 'java'
+    id 'application'
+    id "com.commercehub.gradle.plugin.avro" version "0.99.99"
+}
+
+
+group 'com.aksh.kafka'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://packages.confluent.io/maven/"
+    }
+}
+
+dependencies {
+
+    implementation 'org.apache.kafka:kafka-streams:2.8.1'
+
+    implementation 'org.projectlombok:lombok:1.16.22'
+
+    implementation 'io.confluent:kafka-avro-serializer:5.3.0'
+
+    // required for schema-registry-compatible Avro Serdes
+    implementation ('io.confluent:kafka-streams-avro-serde:6.2.2'){
+        exclude group: 'org.apache.kafka', module: 'kafka-clients'
+    }
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+    implementation 'com.mitchseymour:kafka-registryless-avro-serdes:0.1.0'
+
+
+    testImplementation (
+            'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    )
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+
+}
+
+
+test {
+    useJUnitPlatform()
+}
+
+
+generateAvroJava {
+    source("src/main/avro") // Include avro source in root directory only because Gist doesn't support directories
+    outputDir = file("src/main/generated-sources")
+}
+sourceSets.main.java.srcDirs += ['src/main/generated-sources']
