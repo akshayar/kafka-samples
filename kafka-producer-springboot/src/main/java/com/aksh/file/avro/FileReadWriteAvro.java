@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class FileReadWriteAvro {
-    //"src/main/avro/com/aksh/kafka/avro/fake/TradeData.avsc"
+
     private Schema readSchema(String schemaPath) throws IOException {
         return  new Schema.Parser().parse(new File(schemaPath));
     }

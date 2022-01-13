@@ -1,6 +1,6 @@
 package com.aksh.file.avro;
 
-import com.aksh.kafka.fake.JSRandomDataGenerator;
+import com.aksh.kafka.faker.JSRandomDataGenerator;
 import org.junit.Test;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class FileReadWriteAvroTest {
 
         FileReadWriteAvro readWriteAvro=new FileReadWriteAvro();
         String fileName=System.currentTimeMillis()+"test.avro";
-        String fileSchema="src/main/avro/com/aksh/kafka/avro/fake/TradeData.avsc";
+        String fileSchema="src/main/resources/config/avro/com/aksh/kafka/avro/fake/TradeData.avsc";
         readWriteAvro.writeDataPropertiesObject(fileSchema,fileName, dataToWrite);
 
         List<Properties> readData=readWriteAvro.readDattaAsPropertiesObject(fileSchema,fileName);

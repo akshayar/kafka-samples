@@ -1,4 +1,4 @@
-package com.aksh.kafka.fake;
+package com.aksh.kafka.faker;
 
 import lombok.Data;
 import lombok.ToString;

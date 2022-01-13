@@ -1,4 +1,4 @@
-package com.aksh.kafka.fake;
+package com.aksh.kafka.faker;
 
 import com.google.gson.Gson;
 import org.apache.commons.beanutils.BeanUtils;

@@ -1,7 +1,7 @@
 package com.aksh.kafka;
 
 import com.aksh.kafka.avro.fake.TradeData;
-import com.aksh.kafka.fake.JSRandomDataGenerator;
+import com.aksh.kafka.faker.JSRandomDataGenerator;
 import com.mitchseymour.kafka.serialization.avro.AvroSerdes;
 import org.apache.commons.beanutils.BeanUtils;
 import org.junit.After;

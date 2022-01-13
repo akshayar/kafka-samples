@@ -1,4 +1,4 @@
-package com.aksh.kafka.fake;
+package com.aksh.kafka.faker;
 
 import com.google.gson.Gson;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ public class JSRandomDataGenerator implements IRandomGenerator<Properties> {
     ScriptEngineManager factory = new ScriptEngineManager();
     // create a Nashorn script engine
     ScriptEngine engine = factory.getEngineByName("nashorn");
-    static String FILE_PATH = "src/main/resources/generate-data.js";
+    static String FILE_PATH = "src/main/resources/config/generate-data.js";
 
     Gson gson=new Gson();
 
