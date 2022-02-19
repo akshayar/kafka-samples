@@ -1,0 +1,9 @@
+{
+  "name": "kafka-connect-sample-file-sink",
+  "config": {
+    "connector.class": "com.aksh.kafka.sink.FileStreamSinkConnector",
+    "topics.regex": "dbserver1.inventory.customers",
+    "tasks.max": "1",
+    "file": "dbserver1-inventory-customers-out.txt"
+  }
+}

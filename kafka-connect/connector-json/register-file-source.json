@@ -1,0 +1,9 @@
+{
+  "name": "kafka-connect-sample-file-source",
+  "config": {
+    "connector.class": "com.aksh.kafka.sink.FileStreamSourceConnector",
+    "tasks.max": "1",
+    "file": "dbserver1-inventory-customers-out.txt",
+    "topic": "filesource.inventory.customers"
+  }
+}
