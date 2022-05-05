@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-python-consumer
+  labels:
+    app: kafka-python-consumer
+spec:
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  selector:
+    matchLabels:
+      app: kafka-python-consumer
+  template:
+    metadata:
+      labels:
+        app: kafka-python-consumer
+    spec:
+      containers:
+      - name: kafka-python-consumer
+        image: arawa3/kafka-python-consumer:0.0.1
+        args: ["data-json", "group1","192.168.41.165:9092"]
+        ports:
+        - containerPort: 80
+
