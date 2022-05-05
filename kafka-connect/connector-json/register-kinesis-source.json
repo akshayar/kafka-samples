@@ -1,0 +1,9 @@
+{
+  "name": "kafka-connect-sample-kinesis-source",
+  "config": {
+    "connector.class": "com.aksh.kafka.sink.KinesisSourceConnector",
+    "tasks.max": "1",
+    "kinesisStream": "yellow-cab-trip",
+    "topic": "yellow.cab.trip"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "kafka-connect-sample-s3-sink",
+  "config": {
+    "connector.class": "com.aksh.kafka.sink.S3SinkConnector",
+    "topics.regex": "yellow.cab.trip",
+    "tasks.max": "1",
+    "bucket": "akshaya-firehose-test",
+    "prefix": "customsink/s3",
+    "region":"ap-south-1"
+  }
+}

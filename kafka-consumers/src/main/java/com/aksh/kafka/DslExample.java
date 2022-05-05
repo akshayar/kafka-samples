@@ -1,6 +1,5 @@
 package com.aksh.kafka;
 
-import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -11,22 +10,28 @@ import java.util.Properties;
 
 public class DslExample {
     public static void main(String[] args) {
-        StreamsBuilder builder =new StreamsBuilder();
-        KStream<Void,String> stream=builder.stream("test");
-        stream.foreach(
-                (key,value)->{
-                    System.out.println("DSL Hello:"+value);
-                }
-        );
-        Properties config = new Properties();
-        config.put(StreamsConfig.APPLICATION_ID_CONFIG, "dev1");
-        config.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:29092");
-        config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-        config.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.Void().getClass());
-        config.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
+        try{
+            StreamsBuilder builder =new StreamsBuilder();
+            KStream<String,String> stream=builder.stream("data-stream-ingest-3");
+            stream.foreach(
+                    (key,value)->{
+                        System.out.println("DSL Hello:"+value);
+                    }
+            );
+            Properties config = Common.loadConfig("src/main/resources/kafka.properties");
 
-        KafkaStreams streams=new KafkaStreams(builder.build(),config);
-        streams.start();
-        Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
+            config.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
+            config.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
+
+
+            KafkaStreams streams=new KafkaStreams(builder.build(),config);
+            streams.start();
+            Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
     }
+
 }

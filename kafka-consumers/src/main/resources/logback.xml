@@ -3,7 +3,7 @@
     <!-- if the system property LOCAL is defined, we'll use a human-friendly log format -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%d - %msg%n</pattern>
         </encoder>
     </appender>
 

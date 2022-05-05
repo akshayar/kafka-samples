@@ -11,6 +11,7 @@ mvn clean package -DskipTests
 ## Sample Deployment Using Docker Compose
 1. Bring Up Kafka and Kafka Connect with sample connect. 
 ```shell
+export DEBEZIUM_VERSION=1.8
 docker-compose -f docker-compose-rdsmysql.yaml up --build
 ```
 2. Register MySQL Source Connector to push CDC data to a topic. 

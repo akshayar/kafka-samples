@@ -16,21 +16,26 @@ import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.Printed;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Properties;
 
 public class DslTypedClassConsumer {
     //    @Value("${topicName:}")
-    private static String TOPIC_NAME_GENERIC = "data-stream-ingest";
-    private static String TOPIC_NAME_TRADE="data-stream-ingest-trade";
+    private static String TOPIC_NAME_GENERIC = "data-stream-ingest-3";
+    private static String TOPIC_NAME_TRADE="data-stream-ingest-3";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         Topology topology = getTopologyForTradeInfo();
 
 
-        Properties config = new Properties();
+        Properties config = Common.loadConfig("src/main/resources/kafka.properties");
         config.put(StreamsConfig.APPLICATION_ID_CONFIG, "ConsumerApp");
-        config.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:29092");
+        System.out.println(config);
 
         KafkaStreams streams = new KafkaStreams(topology, config);
         streams.start();

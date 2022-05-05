@@ -2,12 +2,15 @@ package com.aksh.kafka;
 
 import com.aksh.kafka.avro.fake.TradeData;
 import com.aksh.kafka.faker.FakeRandomGenerator;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mitchseymour.kafka.serialization.avro.AvroSerdes;
 import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -15,6 +18,7 @@ import java.util.Properties;
 
 
 public class KafkaPublisherTradeData extends AbstractKafkaPublisher{
+    private ObjectMapper mapper=new ObjectMapper();
 
     @Value("${intervalMs:100}")
     int intervalMs=100;
@@ -43,6 +47,9 @@ public class KafkaPublisherTradeData extends AbstractKafkaPublisher{
 
     @Value("${KafkaPublisherTradeData.serializationMechanism:AVRO}")
     private String serializationMechanism;
+
+    @Value("${partitionKey:}")
+    private String partitionKey;
 
     @PostConstruct
     void init() throws Exception {
@@ -77,20 +84,27 @@ public class KafkaPublisherTradeData extends AbstractKafkaPublisher{
 
         int i = 0;
         while (true && (maxMessages== -1 || maxMessages > i )) {
+            sleep(intervalMs);
             if(isAvro()){
                 publishAvro(producer,i);
             }else{
                 publishJson(producer,i);
             }
-            sleep(intervalMs);
+
             i++;
         }
     }
 
     private void publishAvro(Producer producer, int i) throws Exception {
         TradeData tradeData=(TradeData) fakeRandomGenerator.createPayloadObject(TradeData.class,null);
-        System.out.println("Kafka AVRO Push TradeData: " + tradeData);
-        producer.send(new ProducerRecord<String, TradeData>(topicName, i +"", tradeData), new Callback() {
+
+        String key=i+"";
+        if(StringUtils.isEmpty(partitionKey))
+            { key=tradeData.getSymbol();}
+        else
+            {key= tradeData.get(partitionKey)+"";}
+        System.out.println("Kafka AVRO Push TradeData: " + tradeData+",key:"+key);
+        producer.send(new ProducerRecord<String, TradeData>(topicName, key, tradeData), new Callback() {
 
             public void onCompletion(RecordMetadata m, Exception e) {
                 if (e != null) {
@@ -103,9 +117,14 @@ public class KafkaPublisherTradeData extends AbstractKafkaPublisher{
     }
     protected void publishJson(Producer producer, int i) throws Exception{
         String tradeData= fakeRandomGenerator.createPayload(TradeData.class,dataGeneratorScript);
+        String key=i+"";
+        if(!StringUtils.isEmpty(partitionKey))
+        {
+            JsonNode node=mapper.readTree(tradeData);key= node.get(partitionKey).asText();
+        }
 
-        System.out.println("Kafka JSON Push TradeData: " + tradeData);
-        producer.send(new ProducerRecord<String, String>(topicName, i +"", tradeData), new Callback() {
+        System.out.println("key:"+key+"Kafka JSON Push TradeData: " + tradeData);
+        producer.send(new ProducerRecord<String, String>(topicName, key, tradeData), new Callback() {
 
             public void onCompletion(RecordMetadata m, Exception e) {
                 if (e != null) {
