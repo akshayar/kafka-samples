@@ -1,3 +1,4 @@
 target/
 .idea/
 kafka-consumer-lambda/.DS_Store
+.DS_Store

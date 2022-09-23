@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'application'
-    id "com.commercehub.gradle.plugin.avro" version "0.99.99"
+    id "com.github.davidmc24.gradle.plugin.avro" version "1.2.0"
 }
 
 
@@ -30,6 +30,7 @@ dependencies {
     }
     implementation 'ch.qos.logback:logback-classic:1.2.3'
     implementation 'com.mitchseymour:kafka-registryless-avro-serdes:0.1.0'
+    implementation 'com.amazonaws:aws-java-sdk-secretsmanager:1.12.296'
 
 
     testImplementation (
